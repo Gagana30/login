@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../config');
-const login = require('./UserSchema');
+const User = require('./UserSchema');
 
 router.use(bodyParser.urlencoded({extended:true}));
 router.use(bodyParser.json());
@@ -13,7 +13,7 @@ router.use(bodyParser.json());
 router.post('/register',(req,res) => {
     console.log(req.body)
     var hashedpassword = bcrypt.hashSync(req.body.password,8);
-    login.create({
+    User.create({
         name:req.body.name,
         email:req.body.email,
         phone:req.body.phone,
@@ -29,7 +29,7 @@ router.post('/register',(req,res) => {
 
 //Login User
 router.post('/login',(req,res) => {
-    login.findOne({email:req.body.email},(err,user) =>{
+    User.findOne({email:req.body.email},(err,user) =>{
         if(err) return res.status(500).send({auth:false,token:'There is a problem in login'});
         if(!user) return res.status(403).send({auth:false,token:'No User Found register first'})
         else{
@@ -57,9 +57,9 @@ router.get('/userinfo',(req,res) => {
 
 //List all users
 router.get('/users',(req,res) => {
-    login.find({},(err,login) => {
+    User.find({},(err,login) => {
         if(err) throw err;
-        res.send(login);
+        res.send(User);
     })
 })
 
