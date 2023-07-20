@@ -18,7 +18,7 @@ router.post('/register',(req,res) => {
         email:req.body.email,
         phone:req.body.phone,
         password:hashedpassword,
-        role: req.body.role ?req.body.role :'login'
+        role: req.body.role ?req.body.role :'User'
     },(err,result) => {
         if(err) return res.status(500).send('There is a problem in registration');
         res.setHeader('Access-Control-Allow-Origin','*')
@@ -57,7 +57,7 @@ router.get('/userinfo',(req,res) => {
 
 //List all users
 router.get('/users',(req,res) => {
-    User.find({},(err,login) => {
+    User.find({},(err,User) => {
         if(err) throw err;
         res.send(User);
     })
